@@ -1,0 +1,39 @@
+<h1>Weather Forecast</h1>
+
+<%= form_with url: forecasts_search_path, method: :post, local: true, data: { turbo: false } do |form| %>
+  <div style="margin-bottom: 10px;">
+    <%= form.label :address, "Enter Address:" %>
+    <%= form.text_field :address, placeholder: "e.g., 1600 Amphitheatre Parkway, Mountain View, CA" %>
+  </div>
+  <%= form.submit "Get Forecast" %>
+<% end %>
+
+<% if flash[:alert] %>
+  <p style="color: red;"><%= flash[:alert] %></p>
+<% end %>
+
+<% if @forecast && !@forecast[:error] %>
+  <h2>Forecast for <%= @forecast[:address] %> (<%= @forecast[:zip_code] %>)</h2>
+  <% if @forecast[:from_cache] %>
+    <p style="color: green;"><em>(Result pulled from cache)</em></p>
+  <% end %>
+
+  <h3>Current Weather:</h3>
+  <p>Temperature: <%= @forecast[:current][:temperature] %>°C</p>
+  <p>Feels Like: <%= @forecast[:current][:feels_like] %>°C</p>
+  <p>High: <%= @forecast[:current][:temp_max] %>°C / Low: <%= @forecast[:current][:temp_min] %>°C</p>
+  <p>Description: <%= @forecast[:current][:description].capitalize %></p>
+  <p>City: <%= @forecast[:current][:city_name] %></p>
+
+  <% if @forecast[:extended].present? %>
+    <h3>5-Day Forecast:</h3>
+    <ul>
+      <% @forecast[:extended].each do |day| %>
+        <li>
+          <strong><%= day[:date] %>:</strong>
+          High: <%= day[:temp_max] %>°C, Low: <%= day[:temp_min] %>°C, <%= day[:description].capitalize %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>
