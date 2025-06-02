@@ -4,7 +4,7 @@ class WeatherService
   API_KEY = Rails.application.credentials.dig(Rails.env, :weather_api_key)
 
   def self.fetch_current_weather(latitude, longitude)
-    url = "#{BASE_URL}?lat=#{latitude}&lon=#{longitude}&appid=#{API_KEY}&units=metric" # units=metric for Fahrenheit
+    url = "#{BASE_URL}?lat=#{latitude}&lon=#{longitude}&appid=#{API_KEY}&units=metric" # units=metric for Celcius
     response = Faraday.get(url)
     if response.success?
       data = JSON.parse(response.body)
