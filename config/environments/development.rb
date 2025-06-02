@@ -23,7 +23,15 @@ Rails.application.configure do
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
-    config.cache_store = :memory_store
+    # config.cache_store = :memory_store
+    config.cache_store = :redis_store, {
+      url: ENV.fetch('REDIS_URL', 'redis://localhost:6379/0'), # Default to localhost:6379/0 if REDIS_URL not set
+      connect_timeout: 20, # seconds
+      read_timeout:    20, # seconds
+      write_timeout:   20, # seconds
+      namespace: 'weather_app:cache'
+    }
+    config.active_record.cache_versioning = false
     config.public_file_server.headers = { "Cache-Control" => "public, max-age=#{2.days.to_i}" }
   else
     config.action_controller.perform_caching = false

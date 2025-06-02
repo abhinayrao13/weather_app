@@ -69,6 +69,14 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
+  config.cache_store = :redis_store, {
+    url: ENV.fetch('REDIS_URL'),
+    connect_timeout: 20, # seconds
+    read_timeout:    20, # seconds
+    write_timeout:   20, # seconds
+    namespace: 'weather_app:cache'
+  }
+  config.active_record.cache_versioning = false
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter = :resque
