@@ -17,7 +17,19 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+gem "redis"
+
+# For caching
+gem 'redis-rails' # if you want to use Redis for caching
+
+# For making HTTP requests to external APIs
+gem 'faraday'
+
+# For geocoding addresses
+gem 'geocoder'
+
+# For debugging
+gem 'pry'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -43,6 +55,10 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "rspec-rails", "~> 8.0"
+  gem 'webmock' # For stubbing HTTP requests
+  gem 'timecop' # For testing time-dependent logic like caching expiry
 end
 
 group :development do
